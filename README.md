@@ -15,7 +15,7 @@ BLA BLA
 ### Learning hierarchical and multi-scale graph representations with HBDM
 BLA BLA
 
-### A Millon Node Unipartite Network Example on [Flixster](http://konect.cc/networks/flixster/) 
+### A Millon Node Unipartite Example with [Flixster](http://konect.cc/networks/flixster/) Network 
 | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster-1.png"   />   |
 |:---:|
 | Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
@@ -25,7 +25,7 @@ BLA BLA
 | L=1 | L=3| L=5 | L=8 | 2-D Embedding Space |
 
 
-### A Bipartite Network Example on [GitHub](http://konect.cc/networks/github/) Example
+### A Bipartite Example with [GitHub](http://konect.cc/networks/github/) Network
 | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github-1.png"   />   |
 |:---:|
 | Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
