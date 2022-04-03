@@ -15,15 +15,24 @@ BLA BLA
 ### Learning hierarchical and multi-scale graph representations with HBDM
 BLA BLA
 
-### A Millon Node Unipartite Network Example
+### A Millon Node Unipartite Network Example on [Flixster](http://konect.cc/networks/flixster/) 
 | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster-1.png"   />   |
 |:---:|
-| Dendrogram |
+| Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
 
 | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D0-min.png"  alt="drawing"  width="150" height="150" />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D2-min.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D4-min.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D7-min.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixsterscatter_re.png"  alt="drawing"  width="250" height="250" />  |
 |:---:|:---:|:---:|:---:|:---:|
 | L=1 | L=3| L=5 | L=8 | 2-D Embedding Space |
 
+
+### A Bipartite Network Example on [Drug-Gene](http://snap.stanford.edu/biodata/datasets/10002/10002-ChG-Miner.html) Example
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene-1.png"   />   |
+|:---:|
+| Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
+
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene_l%3D0.png"  alt="drawing"  width="150" height="150" />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene_l%3D2.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene_l%3D4.png"  alt="drawing"  width="150" height="150" />  |  <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_genescatter_re.png"  alt="drawing"  width="250" height="250" />  |
+|:---:|:---:|:---:|:---:|
+| L=1 | L=3| L=5 | 2-D Embedding Space |
 
 
 ### References
