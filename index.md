@@ -25,14 +25,14 @@ BLA BLA
 | L=1 | L=3| L=5 | L=8 | 2-D Embedding Space |
 
 
-### A Bipartite Network Example on [Drug-Gene](http://snap.stanford.edu/biodata/datasets/10002/10002-ChG-Miner.html) Example
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene-1.png"   />   |
+### A Bipartite Network Example on [GitHub](http://konect.cc/networks/github/) Example
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github-1.png"   />   |
 |:---:|
 | Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
 
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene_l%3D0.png"  alt="drawing"  width="150" height="150" />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene_l%3D2.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_gene_l%3D4.png"  alt="drawing"  width="150" height="150" />  |  <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/drug_genescatter_re.png"  alt="drawing"  width="250" height="250" />  |
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l%3D0.png"  alt="drawing"  width="150" height="150" />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l%3D2.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l%3D5.png"  alt="drawing"  width="150" height="150" />  |  <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/githubscatter_re.png"  alt="drawing"  width="250" height="250" />  |
 |:---:|:---:|:---:|:---:|
-| L=1 | L=3| L=5 | 2-D Embedding Space |
+| L=1 | L=3| L=6 | 2-D Embedding Space |
 
 
 ### References
