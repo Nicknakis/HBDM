@@ -15,5 +15,16 @@ BLA BLA
 ### Learning hierarchical and multi-scale graph representations with HBDM
 BLA BLA
 
+### A Millon Node Unipartite Network Example
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster-1.png"   />   |
+|:---:|
+| Dendrogram |
+
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D0-min.png"  alt="drawing"  width="150" height="150" />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D2-min.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D4-min.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D7-min.png"  alt="drawing"  width="150" height="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixsterscatter_re.png"  alt="drawing"  width="250" height="250" />  |
+|:---:|:---:|:---:|:---:|:---:|
+| L=1 | L=3| L=5 | L=8 | 2-D Embedding Space |
+
+
+
 ### References
 N. Nakis, A. Celikkanat, S. Lehmann and M. Mørup, [A Hierarchical Block Distance Model for Ultra Low-Dimensional Graph Representations](https://openreview.net/pdf?id=U-GB_gONqbo), Under Review.
