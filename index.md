@@ -9,11 +9,6 @@ We propose a novel graph representation learning method named the Hierarchical B
 ### Code
 An implementation of the project in Python and Pytorch can be reached at our [Github repository](https://github.com/Nicknakis/HBDM).
 
-### Installation
-BLA BLA
-
-### Learning hierarchical and multi-scale graph representations with HBDM
-BLA BLA
 
 ### A Millon Node Unipartite Example with [Flixster](http://konect.cc/networks/flixster/) Network
 | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster-1.png?raw=true"   />   |
@@ -30,7 +25,7 @@ BLA BLA
 |:---:|
 | Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
 
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=0.png?raw=true"  alt="drawing"  width="220"  />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=2.png?raw=true"  alt="drawing"  width="220"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=5.png?raw=true"  alt="drawing"  width="220"  />  |  <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/githubscatter_re.png?raw=true"  alt="drawing"  width="250" />  |
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=0.png?raw=true"  alt="drawing"  width="320"  />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=2.png?raw=true"  alt="drawing"  width="320"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=5.png?raw=true"  alt="drawing"  width="320"  />  |  <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/githubscatter_re.png?raw=true"  alt="drawing"  width="250" />  |
 |:---:|:---:|:---:|:---:|
 | L=1 | L=3| L=6 | 2-D Embedding Space |
 
