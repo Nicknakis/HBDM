@@ -16,21 +16,21 @@ BLA BLA
 BLA BLA
 
 ### A Millon Node Unipartite Example with [Flixster](http://konect.cc/networks/flixster/) Network
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster-1.png"   />   |
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster-1.png?raw=true"   />   |
 |:---:|
 | Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
 
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D0-min.png"  alt="drawing"  width="150"  />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D2-min.png"  alt="drawing"  width="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D4-min.png"  alt="drawing"  width="150"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l%3D7-min.png"  alt="drawing"  width="150"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixsterscatter_re.png"  alt="drawing"  width="250"  />  |
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l=0-min.png?raw=true"  alt="drawing"  width="150"  />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l=2-min.png?raw=true"  alt="drawing"  width="150" />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l=4-min.png?raw=true"  alt="drawing"  width="150"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixster_l=7-min.png?raw=true"  alt="drawing"  width="150"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/flixsterscatter_re.png?raw=true"  alt="drawing"  width="250"  />  |
 |:---:|:---:|:---:|:---:|:---:|
 | L=1 | L=3| L=5 | L=8 | 2-D Embedding Space |
 
 
 ### A Bipartite Example with [GitHub](http://konect.cc/networks/github/) Network 
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github-1.png"   />   |
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github-1.png?raw=true"   />   |
 |:---:|
 | Dendrogram - Binary Logarithm over the Sum of Euclidean Distances |
 
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l%3D0.png"  alt="drawing"  width="220"  />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l%3D2.png"  alt="drawing"  width="220"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l%3D5.png"  alt="drawing"  width="220"  />  |  <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/githubscatter_re.png"  alt="drawing"  width="250" />  |
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=0.png?raw=true"  alt="drawing"  width="220"  />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=2.png?raw=true"  alt="drawing"  width="220"  />  | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github_l=5.png?raw=true"  alt="drawing"  width="220"  />  |  <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/githubscatter_re.png?raw=true"  alt="drawing"  width="250" />  |
 |:---:|:---:|:---:|:---:|
 | L=1 | L=3| L=6 | 2-D Embedding Space |
 
