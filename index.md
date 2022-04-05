@@ -21,7 +21,7 @@ An implementation of the project in Python and Pytorch can be reached at our [Gi
 
 
 ### A Bipartite Example with [GitHub](http://konect.cc/networks/github/) Network 
-| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github-1.png?raw=true"   />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/githubscatter_re.png?raw=true"  alt="drawing"  width="250" />  |
+| <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/github-1.png?raw=true"   />   | <img src="https://github.com/Nicknakis/HBDM/blob/gh-pages/docs/assets/githubscatter_re.png?raw=true"  alt="drawing"  width="350" />  |
 |:---:|:---:|
 | Dendrogram - Binary Logarithm over the Sum of Euclidean Distances | 2-D Embedding Space |
 
