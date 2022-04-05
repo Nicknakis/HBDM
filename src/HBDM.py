@@ -6,24 +6,25 @@ import torch.nn as nn
 import numpy as np
 import torch.optim as optim
 import matplotlib.pyplot as plt
+import torch_sparse
 
 CUDA = torch.cuda.is_available()
 from fractal_main_cond import Tree_kmeans_recursion
 from spectral_clustering import Spectral_clustering_init
 from sklearn import metrics
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-torch.set_default_tensor_type('torch.cuda.FloatTensor')
+# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# torch.set_default_tensor_type('torch.cuda.FloatTensor')
 undirected=1
-import torch_sparse
-
+# device = torch.device("cpu")
+# torch.set_default_tensor_type('torch.FloatTensor')
 
 
 
 class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
-    def __init__(self,data,sparse_i,sparse_j, input_size,latent_dim,graph_type,non_sparse_i=None,non_sparse_j=None,sparse_i_rem=None,sparse_j_rem=None,CVflag=False,initialization=None,scaling=None,missing_data=False):
+    def __init__(self,data,sparse_i,sparse_j, input_size,latent_dim,graph_type,non_sparse_i=None,non_sparse_j=None,sparse_i_rem=None,sparse_j_rem=None,CVflag=False,initialization=None,scaling=None,missing_data=False,device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")):
         super(LSM, self).__init__()
         Tree_kmeans_recursion.__init__(self,minimum_points=3*int(data.shape[0]/(data.shape[0]/np.log(data.shape[0]))),init_layer_split=torch.round(torch.log(torch.tensor(data.shape[0]).float())))
-        Spectral_clustering_init.__init__(self,method='Adjacency')
+        Spectral_clustering_init.__init__(self,device=device)
         self.input_size=input_size
         self.cluster_evolution=[]
         self.mask_evolution=[]
@@ -46,11 +47,10 @@ class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
         self.sparse_j_idx=sparse_j
         self.pdist = nn.PairwiseDistance(p=2,eps=0)
         self.missing_data=missing_data
-        self.CUDA=True
         self.pdist_tol1=nn.PairwiseDistance(p=2,eps=0)
 
         
-        
+        self.device=device
        
         self.non_sparse_i_idx_removed=non_sparse_i
      
@@ -251,12 +251,9 @@ class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
     
     def update_clusters_local(self):
        
-        if self.CUDA:
-            z = torch.cuda.FloatTensor(self.total_K, self.latent_dim).fill_(0)
-            o = torch.cuda.FloatTensor(self.total_K).fill_(0)
-        else:
-            z = torch.zeros(self.k_centers, self.Dim)
-            o = torch.zeros(self.k_centers)
+        z = torch.zeros(self.total_K, self.latent_dim)
+        o = torch.zeros(self.total_K)
+        
        
         if self.scaling:
             with torch.no_grad():
@@ -493,56 +490,5 @@ class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
  
    
     
-plt.style.use('ggplot')
-torch.autograd.set_detect_anomaly(True)
-
-
-
-latent_dims=[2]
-datasets=['grqc']
-for dataset in datasets:
-    for latent_dim in latent_dims:
-      
-       
-        for cv_split in range(1):
-          
-    
-    
-    # ################################################################################################################################################################
-    # ################################################################################################################################################################
-    # ################################################################################################################################################################
-            sparse_i_rem=torch.from_numpy(np.loadtxt(dataset+'/sparse_i_rem.txt')).long().to(device)
-            sparse_j_rem=torch.from_numpy(np.loadtxt(dataset+'/sparse_j_rem.txt')).long().to(device)
-            non_sparse_i=torch.from_numpy(np.loadtxt(dataset+'/non_sparse_i.txt')).long().to(device)
-            non_sparse_j=torch.from_numpy(np.loadtxt(dataset+'/non_sparse_j.txt')).long().to(device)
-            sparse_i=torch.from_numpy(np.loadtxt(dataset+'/sparse_i.txt')).long().to(device)
-            sparse_j=torch.from_numpy(np.loadtxt(dataset+'/sparse_j.txt')).long().to(device)
-            N=int(sparse_j.max()+1)
-            #Missing data here denoted if Marginalization is applied or not
-            # In case missing data is set to True then the input should be the complete graph
-            model = LSM(torch.randn(N,latent_dim),sparse_i,sparse_j,N,latent_dim=latent_dim,non_sparse_i=non_sparse_i,non_sparse_j=non_sparse_j,sparse_i_rem=sparse_i_rem,sparse_j_rem=sparse_j_rem,CVflag=True,graph_type='undirected',missing_data=False).to(device)
-    
-            optimizer = optim.Adam(model.parameters(), 0.01)  
-            elements=(N*(N-1))*0.5
-            for epoch in range(15000):
-                if (epoch%25==0):
-                    model.build_hierarchy=True
-                
-                                  
-                
-                loss=-model.LSM_likelihood_bias(epoch=epoch)/N
-             
-                
-         
-             
-                optimizer.zero_grad() # clear the gradients.   
-                loss.backward() # backpropagate
-                optimizer.step() # update the weights
-                if epoch%1000==0:
-                     roc,pr=model.link_prediction() 
-                     print('Iteration Number:', epoch)
-                     print('Negative Log-Likelihood:',(loss.item()*N)/elements)
-                     print('AUC-ROC:',roc)
-                     print('AUC-PR:',pr)
 
  

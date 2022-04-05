@@ -10,7 +10,7 @@ from torch_sparse import spspmm
 
 
 class Euclidean_Kmeans():
-    def __init__(self,cond_control,k_centers,dimensions,init_cent=None,split_mask=None,previous_cl_idx=None,full_prev_cl=None,prev_centers=None,full_prev_centers=None,centroids_split=None,assigned_points=None,aux_distance=None,local_idx=None,initialization=1,retain_structure=False,CUDA=True,device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu"), n_iter=300):
+    def __init__(self,cond_control,k_centers,dimensions,init_cent=None,split_mask=None,previous_cl_idx=None,full_prev_cl=None,prev_centers=None,full_prev_centers=None,centroids_split=None,assigned_points=None,aux_distance=None,local_idx=None,initialization=1,retain_structure=False,device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu"), n_iter=300):
         """
         Kmeans-Euclidean Distance minimization: Pytorch CUDA version
         k_centers: number of the starting centroids
@@ -22,13 +22,11 @@ class Euclidean_Kmeans():
         
         AVOID the use of dataloader module of Pytorch---every batch will be loaded from the CPU to GPU giving high order loading overhead
         """
-        if CUDA:
-            torch.set_default_tensor_type('torch.cuda.FloatTensor')
+       
         self.k_centers=k_centers
         self.N=dimensions[0]
         self.Dim=dimensions[-1]
         self.device=device
-        self.CUDA=CUDA
         self.flag1=0
         self.previous_cl_idx=previous_cl_idx
         self.initialization=initialization
@@ -40,32 +38,31 @@ class Euclidean_Kmeans():
         self.collapse_flag=False
         self.cond_control=cond_control
         
-
             
-        if CUDA:
+        if 1==1:
             
             if self.initialization:
                 self.lambdas_full = torch.rand(self.N,self.k_centers,device=device)
             else:
                 self.lambdas_full = torch.rand(self.N,2,device=device)
-            self.local_cl_idx=torch.cuda.LongTensor(self.N).fill_(0)
+            self.local_cl_idx=torch.zeros(self.N,device=device)
 
             self.inv_lambdas_full=1/self.lambdas_full
             if self.initialization:
                 self.centroids=init_cent
-                self.cluster_idx= torch.cuda.LongTensor(self.N).fill_(0)
+                self.cluster_idx= torch.zeros(self.N,device=device)
             else:
                 if retain_structure:
                     self.centroids=prev_centers
                     
                 else:
-                    self.centroids=torch.cuda.FloatTensor(self.k_centers,self.Dim).fill_(0)
-                    even_idx=torch.arange(0, self.k_centers,2)
-                    odd_idx=torch.arange(1, self.k_centers,2)
+                    self.centroids=torch.zeros(self.k_centers,self.Dim,device=device)
+                    even_idx=torch.arange(0, self.k_centers,2,device=device)
+                    odd_idx=torch.arange(1, self.k_centers,2,device=device)
            
                     self.centroids[odd_idx,:]=prev_centers+0.01
                     self.centroids[even_idx,:]=prev_centers-0.01
-                collapse_control_avg_radius = torch.cuda.FloatTensor(full_prev_centers.shape[0]).fill_(0)
+                collapse_control_avg_radius = torch.zeros(full_prev_centers.shape[0],device=device)
                 
                 collapse_control_avg_radius=collapse_control_avg_radius.index_add(0, full_prev_cl, 0.5*self.aux_distance[torch.arange(self.aux_distance.shape[0],device=self.device),local_idx])
                 collapse_control_avg_radius=(collapse_control_avg_radius/assigned_points)[centroids_split]
@@ -79,26 +76,24 @@ class Euclidean_Kmeans():
                     # self.collapsed_nodes=self.collapses[0]
                     # self.collapsed_cnts=self.condensed_centers[self.collapses[1]]
 # =============================================================================
-                    indicator=torch.cat([torch.arange(centroids_split.sum().long()).unsqueeze(0),torch.zeros(centroids_split.sum().long()).long().unsqueeze(0)],0)
-               
+                    indicator=torch.cat([torch.arange(centroids_split.sum().long(),device=device).unsqueeze(0),torch.zeros(centroids_split.sum().long(),device=device).long().unsqueeze(0)],0)
+                    
                                 
                     centers_indicator=torch.cat([torch.arange(self.previous_cl_idx.shape[0]).unsqueeze(0),self.previous_cl_idx.unsqueeze(0)],0)
                     
                     indexC, valueC = spspmm(centers_indicator,torch.ones(centers_indicator.shape[1]), indicator,self.condensed_centers,self.previous_cl_idx.shape[0],centroids_split.shape[0],1,coalesced=True)
-                    self.collapsed_nodes=indexC[0][valueC.bool()]
-                    self.collapsed_cnts=self.previous_cl_idx[valueC.bool()]
+                    if device.type=='cpu':
+                        new_valueC=torch.zeros(self.previous_cl_idx.shape[0])
+                        new_valueC[indexC[0]]=valueC
+                        self.collapsed_nodes=indexC[0]#[new_valueC.bool()]
+                        self.collapsed_cnts=self.previous_cl_idx[new_valueC.bool()]
+                        
+                    else:
+                        self.collapsed_nodes=indexC[0][valueC.bool()]
+                        self.collapsed_cnts=self.previous_cl_idx[valueC.bool()]
 # =============================================================================
                
-        else:
-            self.lambdas = torch.rand(self.N,self.k_centers)
-           
-            if self.initialization:
-                self.centroids=torch.randn(self.k_centers,self.Dim)
-
-            else:
-                self.centroids=torch.randn(int(self.k_centers/2),2,self.Dim)
-                self.centroids_binary_extension=self.centroids[self.previous_cl_idx,:,:]
-            self.inv_lambdas=torch.zeros(self.N)
+        
 
 
 
@@ -129,9 +124,9 @@ class Euclidean_Kmeans():
         #print('total number of iterations:',t)
         #create Z^T responsibility sparse matrix mask KxN 
         if self.initialization:
-            sparse_mask=torch.sparse.FloatTensor(torch.cat((self.cluster_idx.unsqueeze(-1),torch.arange(self.N).unsqueeze(-1)),1).t(),torch.ones(self.N),torch.Size([self.k_centers,self.N]))
+            sparse_mask=torch.sparse.FloatTensor(torch.cat((self.cluster_idx.unsqueeze(-1),torch.arange(self.N,device=self.device).unsqueeze(-1)),1).t(),torch.ones(self.N,device=self.device),torch.Size([self.k_centers,self.N]))
         else:
-            sparse_mask=torch.sparse.FloatTensor(torch.cat((self.cluster_idx.unsqueeze(-1),torch.arange(self.N).unsqueeze(-1)),1).t(),torch.ones(self.N),torch.Size([self.k_centers,self.N]))
+            sparse_mask=torch.sparse.FloatTensor(torch.cat((self.cluster_idx.unsqueeze(-1),torch.arange(self.N,device=self.device).unsqueeze(-1)),1).t(),torch.ones(self.N,device=self.device),torch.Size([self.k_centers,self.N]))
           
    
 
@@ -145,7 +140,7 @@ class Euclidean_Kmeans():
     def calc_idx(self,Data):
         aux_distance,sq_distance=self.calc_dis(Data)
         _, cluster_idx=torch.min(aux_distance,dim=-1)
-        self.local_cl_idx=torch.cuda.LongTensor(self.N).fill_(0)
+        self.local_cl_idx=torch.zeros(self.N,device=self.device)
         if self.initialization:
             self.local_cl_idx=cluster_idx
             self.cluster_idx=cluster_idx
@@ -159,13 +154,13 @@ class Euclidean_Kmeans():
     def calc_dis(self,Data):
        
   
-
         with torch.no_grad():
             if self.initialization:
                 sq_distance=(((Data.unsqueeze(dim=1)-self.centroids.unsqueeze(dim=0))**2).sum(-1))+1e-06
             else:
                     
                 sq_distance=((Data.unsqueeze(dim=1)-self.centroids.view(-1,2,self.Dim)[self.previous_cl_idx,:,:])**2).sum(-1)+1e-06
+        
                 
         aux_distance=(sq_distance)*self.inv_lambdas_full+self.lambdas_full
 
@@ -177,12 +172,8 @@ class Euclidean_Kmeans():
         
     def update_clusters(self,cluster_idx,sq_distance,Data):
        
-        if self.CUDA:
-            z = torch.cuda.FloatTensor(self.k_centers, self.Dim).fill_(0)
-            o = torch.cuda.FloatTensor(self.k_centers).fill_(0)
-        else:
-            z = torch.zeros(self.k_centers, self.Dim)
-            o = torch.zeros(self.k_centers)
+        z = torch.zeros(self.k_centers, self.Dim,device=self.device)
+        o = torch.zeros(self.k_centers,device=self.device)
        
         self.lambdas_full=sq_distance**0.5+1e-06
         self.inv_lambdas_full=1/self.lambdas_full
@@ -192,10 +183,7 @@ class Euclidean_Kmeans():
         self.lambdas_X=torch.mul(Data,inv_lambdas.unsqueeze(-1))
        
              
-        # if not self.initialization:
-
-        #     z=z.index_add(0, cluster_idx, self.lambdas_X)
-        #     o=o.index_add(0, cluster_idx, inv_lambdas)
+      
        
         idx=torch.ones(self.N).bool()
         z=z.index_add(0, cluster_idx[idx], self.lambdas_X[idx])

@@ -6,18 +6,15 @@ import torch
 import networkx as nx
 from sklearn.manifold import MDS
 
-CUDA = torch.cuda.is_available()
-
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 
 
 
 class Spectral_clustering_init():
-    def __init__(self,num_of_eig=10,method='Adjacency'):
+    def __init__(self,num_of_eig=10,method='Adjacency',device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")):
         
         self.num_of_eig=num_of_eig
         self.method=method
+        self.device=device
 
     
     def spectral_clustering(self):
@@ -122,7 +119,7 @@ class Spectral_clustering_init():
 
 
         
-        return torch.from_numpy(U_norm).float().to(device)
+        return torch.from_numpy(U_norm).float().to(self.device)
             
         
 

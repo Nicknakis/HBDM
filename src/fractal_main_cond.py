@@ -33,7 +33,7 @@ class Tree_kmeans_recursion():
         #first iteration
         #initialize kmeans with number of clusters equal to logN
         flag_uneven_split=False
-        model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=int(self.init_layer_split),dimensions= self.spectral_data.shape,init_cent=initial_cntrs)
+        model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=int(self.init_layer_split),dimensions= self.spectral_data.shape,init_cent=initial_cntrs,device=self.device)
         sparse_mask,cl_idx,local_idx,aux_distance=model.Kmeans_run(self.spectral_data)
         full_prev_cl=cl_idx
         #flags shows if all clusters will be partioned later on
@@ -51,7 +51,7 @@ class Tree_kmeans_recursion():
                 print(i)
         #datapoints in each of the corresponding clusters
             #Compute points in each cluster
-            assigned_points= torch.cuda.FloatTensor(sparse_mask.shape[0]).fill_(0)
+            assigned_points= torch.zeros(sparse_mask.shape[0])
             assigned_points[torch.sparse.sum(sparse_mask,1)._indices()[0]]=torch.sparse.sum(sparse_mask,1)._values()
             #Splitting criterion decides if a cluster has enough points to be binary splitted
             self.splitting_criterion=(assigned_points>self.minimum_points)
@@ -79,7 +79,7 @@ class Tree_kmeans_recursion():
                     #global unique cluster ids to be used
                     clu_ids=torch.arange(init_id,sum_leafs)
                     #vector of K size assigned with unique cluster for the leaf nodes, zero elsewhere
-                    cl_vec=torch.cuda.LongTensor(sparse_mask.shape[0]).fill_(0)
+                    cl_vec=torch.zeros(sparse_mask.shape[0]).long()
                     cl_vec[erion]=clu_ids
                     #initial starting point for next level of ids, so no duplicates exist
                     init_id=sum_leafs
@@ -121,7 +121,7 @@ class Tree_kmeans_recursion():
             if flag_uneven_split:
                 #translate the different size of splits to the total N of the network
                 self.mask_split=initial_mask
-            model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=2*int(splited_cl_ids_i.shape[0]),dimensions= self.spectral_data[self.mask_split].shape,split_mask=self.mask_split,previous_cl_idx=cl_idx,full_prev_cl=full_prev_cl,prev_centers=centers.detach()[self.splitting_criterion],full_prev_centers=centers.detach(),centroids_split=self.splitting_criterion,assigned_points=assigned_points,aux_distance=aux_distance,local_idx=local_idx,initialization=0)
+            model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=2*int(splited_cl_ids_i.shape[0]),dimensions= self.spectral_data[self.mask_split].shape,split_mask=self.mask_split,previous_cl_idx=cl_idx,full_prev_cl=full_prev_cl,prev_centers=centers.detach()[self.splitting_criterion],full_prev_centers=centers.detach(),centroids_split=self.splitting_criterion,assigned_points=assigned_points,aux_distance=aux_distance,local_idx=local_idx,initialization=0,device=self.device)
             sparse_mask,cl_idx,local_idx,aux_distance=model.Kmeans_run(self.spectral_data[self.mask_split])
             full_prev_cl=cl_idx
         return global_cl,torch.cat(self.leaf_centroids)
@@ -144,7 +144,7 @@ class Tree_kmeans_recursion():
         #first iteration
         #initialize kmeans with number of clusters equal to logN
         flag_uneven_split=False
-        model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=int(self.init_layer_split),dimensions= self.latent_z.shape,init_cent=initial_cntrs)
+        model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=int(self.init_layer_split),dimensions= self.latent_z.shape,init_cent=initial_cntrs,device=self.device)
         sparse_mask,cl_idx,local_idx,aux_distance=model.Kmeans_run(deepcopy(self.scaling_factor.detach()*self.latent_z.detach()),self.scaling_factor*self.latent_z.detach())
         self.general_mask.append(torch.arange(self.input_size))       
 
@@ -170,7 +170,7 @@ class Tree_kmeans_recursion():
                 print(i)
         #datapoints in each of the corresponding clusters
             #Compute points in each cluster
-            assigned_points= torch.cuda.FloatTensor(sparse_mask.shape[0]).fill_(0)
+            assigned_points= torch.zeros(sparse_mask.shape[0])
             assigned_points[torch.sparse.sum(sparse_mask,1)._indices()[0]]=torch.sparse.sum(sparse_mask,1)._values()
             #Splitting criterion decides if a cluster has enough points to be binary splitted
             self.splitting_criterion=(assigned_points>self.minimum_points)
@@ -197,7 +197,7 @@ class Tree_kmeans_recursion():
                     #global unique cluster ids to be used
                     clu_ids=torch.arange(init_id,sum_leafs)
                     #vector of K size assigned with unique cluster for the leaf nodes, zero elsewhere
-                    cl_vec=torch.cuda.LongTensor(sparse_mask.shape[0]).fill_(0)
+                    cl_vec=torch.zeros(sparse_mask.shape[0]).long()
                     cl_vec[erion]=clu_ids
                     #initial starting point for next level of ids, so no duplicates exist
                     init_id=sum_leafs
@@ -241,7 +241,7 @@ class Tree_kmeans_recursion():
                 self.mask_split=initial_mask
                 
             
-            model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=2*int(splited_cl_ids_i.shape[0]),dimensions=self.latent_z[self.mask_split].shape,split_mask=self.mask_split,previous_cl_idx=cl_idx,full_prev_cl=full_prev_cl,prev_centers=centers.detach()[self.splitting_criterion],full_prev_centers=centers.detach(),centroids_split=self.splitting_criterion,assigned_points=assigned_points,aux_distance=aux_distance,local_idx=local_idx,initialization=0)
+            model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=2*int(splited_cl_ids_i.shape[0]),dimensions=self.latent_z[self.mask_split].shape,split_mask=self.mask_split,previous_cl_idx=cl_idx,full_prev_cl=full_prev_cl,prev_centers=centers.detach()[self.splitting_criterion],full_prev_centers=centers.detach(),centroids_split=self.splitting_criterion,assigned_points=assigned_points,aux_distance=aux_distance,local_idx=local_idx,initialization=0,device=self.device)
             sparse_mask,cl_idx,local_idx,aux_distance=model.Kmeans_run(deepcopy(self.scaling_factor.detach()*self.latent_z.detach()[self.mask_split]),self.scaling_factor*self.latent_z.detach()[self.mask_split])
             full_prev_cl=cl_idx
             #self.global_cl_likelihood_mask(global_cl)
@@ -280,7 +280,7 @@ class Tree_kmeans_recursion():
         #first iteration
         #initialize kmeans with number of clusters equal to logN
         flag_uneven_split=False
-        model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=int(self.init_layer_split),dimensions= self.latent_z.shape,init_cent=initial_cntrs)
+        model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=int(self.init_layer_split),dimensions= self.latent_z.shape,init_cent=initial_cntrs,device=self.device)
         sparse_mask,cl_idx,local_idx,aux_distance=model.Kmeans_run(deepcopy(self.latent_z.detach()),self.latent_z)
         self.general_mask.append(torch.arange(self.input_size))       
 
@@ -307,7 +307,7 @@ class Tree_kmeans_recursion():
                 print(i)
         #datapoints in each of the corresponding clusters
             #Compute points in each cluster
-            assigned_points= torch.cuda.FloatTensor(sparse_mask.shape[0]).fill_(0)
+            assigned_points= torch.zeros(sparse_mask.shape[0])
             assigned_points[torch.sparse.sum(sparse_mask,1)._indices()[0]]=torch.sparse.sum(sparse_mask,1)._values()
             #Splitting criterion decides if a cluster has enough points to be binary splitted
             self.splitting_criterion=(assigned_points>self.minimum_points)
@@ -335,7 +335,7 @@ class Tree_kmeans_recursion():
                     #global unique cluster ids to be used
                     clu_ids=torch.arange(init_id,sum_leafs)
                     #vector of K size assigned with unique cluster for the leaf nodes, zero elsewhere
-                    cl_vec=torch.cuda.LongTensor(sparse_mask.shape[0]).fill_(0)
+                    cl_vec=torch.zeros(sparse_mask.shape[0]).long()
                     cl_vec[erion]=clu_ids
                     #initial starting point for next level of ids, so no duplicates exist
                     init_id=sum_leafs
@@ -388,7 +388,7 @@ class Tree_kmeans_recursion():
             #     else:
             #         model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=2*int(splited_cl_ids_i.shape[0]),dimensions= self.latent_z[self.mask_split].shape,split_mask=self.mask_split,previous_cl_idx=cl_idx,full_prev_cl=full_prev_cl,prev_centers=centers.detach()[self.splitting_criterion],full_prev_centers=centers.detach(),centroids_split=self.splitting_criterion,assigned_points=assigned_points,aux_distance=aux_distance,local_idx=local_idx,initialization=0,retain_structure=False)
             # else:
-            model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=2*int(splited_cl_ids_i.shape[0]),dimensions= self.latent_z[self.mask_split].shape,split_mask=self.mask_split,previous_cl_idx=cl_idx,full_prev_cl=full_prev_cl,prev_centers=centers.detach()[self.splitting_criterion],full_prev_centers=centers.detach(),centroids_split=self.splitting_criterion,assigned_points=assigned_points,aux_distance=aux_distance,local_idx=local_idx,initialization=0,retain_structure=False)
+            model=Euclidean_Kmeans(cond_control=self.cond_control,k_centers=2*int(splited_cl_ids_i.shape[0]),dimensions= self.latent_z[self.mask_split].shape,split_mask=self.mask_split,previous_cl_idx=cl_idx,full_prev_cl=full_prev_cl,prev_centers=centers.detach()[self.splitting_criterion],full_prev_centers=centers.detach(),centroids_split=self.splitting_criterion,assigned_points=assigned_points,aux_distance=aux_distance,local_idx=local_idx,initialization=0,retain_structure=False,device=self.device)
             sparse_mask,cl_idx,local_idx,aux_distance=model.Kmeans_run(deepcopy(self.latent_z.detach()[self.mask_split]),self.latent_z[self.mask_split])
             full_prev_cl=cl_idx
             if cl_idx.shape[0]==self.input_size:
@@ -416,7 +416,7 @@ class Tree_kmeans_recursion():
         # indexB=sparse_mask.transpose(0,1)._indices()
         N_values=torch.arange(global_cl.shape[0])
         indices_N_K=torch.cat([N_values.unsqueeze(0),global_cl.unsqueeze(0)],0)
-        values=torch.cuda.FloatTensor(global_cl.shape[0]).fill_(1)
+        values=torch.ones(global_cl.shape[0])
         self.global_cl=global_cl
         # if matrices are not coalesced it does not work
         #Enforce it with 'coalesced=True'
