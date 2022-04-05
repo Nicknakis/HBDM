@@ -180,7 +180,7 @@ class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
 
                 self.build_hierarchy=False
                 # update fractal structure
-                self.first_centers=torch.randn(int(self.init_layer_split),self.latent_dim,device=device)
+                self.first_centers=torch.randn(int(self.init_layer_split),self.latent_dim,device=self.device)
 
                 init_centroids=self.kmeans_tree_recursively(depth=80,initial_cntrs=self.first_centers)
                 self.first_centers=init_centroids
