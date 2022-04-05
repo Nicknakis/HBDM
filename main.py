@@ -71,47 +71,45 @@ if __name__ == "__main__":
     for dataset in datasets:
         for latent_dim in latent_dims:
           
-           
-            for cv_split in range(1):
-              
+                        
         
         
-        # ################################################################################################################################################################
-        # ################################################################################################################################################################
-        # ################################################################################################################################################################
-                sparse_i_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i_rem.txt')).long().to(device)
-                sparse_j_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j_rem.txt')).long().to(device)
-                non_sparse_i=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/non_sparse_i.txt')).long().to(device)
-                non_sparse_j=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/non_sparse_j.txt')).long().to(device)
-                sparse_i=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i.txt')).long().to(device)
-                sparse_j=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j.txt')).long().to(device)
-                N=int(sparse_j.max()+1)
-                #Missing data here denoted if Marginalization is applied or not
-                # In case missing data is set to True then the input should be the complete graph
-                model = LSM(torch.randn(N,latent_dim),sparse_i,sparse_j,N,latent_dim=latent_dim,non_sparse_i=non_sparse_i,non_sparse_j=non_sparse_j,sparse_i_rem=sparse_i_rem,sparse_j_rem=sparse_j_rem,CVflag=True,graph_type='undirected',missing_data=False,device=device).to(device)
-                optimizer = optim.Adam(model.parameters(), args.lr)  
-                elements=(N*(N-1))*0.5
-                for epoch in tqdm(range(args.epochs),desc="HBDM is Running…",ascii=False, ncols=75):
-                    if (epoch%25==0):
-                        model.build_hierarchy=True
-                    
-                                      
-                    
-                    loss=-model.LSM_likelihood_bias(epoch=epoch)/N
-                 
-                    
+            # ################################################################################################################################################################
+            # ################################################################################################################################################################
+            # ################################################################################################################################################################
+            sparse_i_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i_rem.txt')).long().to(device)
+            sparse_j_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j_rem.txt')).long().to(device)
+            non_sparse_i=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/non_sparse_i.txt')).long().to(device)
+            non_sparse_j=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/non_sparse_j.txt')).long().to(device)
+            sparse_i=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i.txt')).long().to(device)
+            sparse_j=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j.txt')).long().to(device)
+            N=int(sparse_j.max()+1)
+            #Missing data here denoted if Marginalization is applied or not
+            # In case missing data is set to True then the input should be the complete graph
+            model = LSM(torch.randn(N,latent_dim),sparse_i,sparse_j,N,latent_dim=latent_dim,non_sparse_i=non_sparse_i,non_sparse_j=non_sparse_j,sparse_i_rem=sparse_i_rem,sparse_j_rem=sparse_j_rem,CVflag=True,graph_type='undirected',missing_data=False,device=device).to(device)
+            optimizer = optim.Adam(model.parameters(), args.lr)  
+            elements=(N*(N-1))*0.5
+            for epoch in tqdm(range(args.epochs),desc="HBDM is Running…",ascii=False, ncols=75):
+                if (epoch%25==0):
+                    model.build_hierarchy=True
+                
+                                  
+                
+                loss=-model.LSM_likelihood_bias(epoch=epoch)/N
              
-                 
-                    optimizer.zero_grad() # clear the gradients.   
-                    loss.backward() # backpropagate
-                    optimizer.step() # update the weights
-                    if epoch%1000==0:
-                          print('Iteration Number:', epoch)
-                          print('Negative Log-Likelihood:',(loss.item()*N)/elements)
-                          if args.LP:
-                              roc,pr=model.link_prediction() 
-                              print('AUC-ROC:',roc)
-                              print('AUC-PR:',pr)
+                
+         
+             
+                optimizer.zero_grad() # clear the gradients.   
+                loss.backward() # backpropagate
+                optimizer.step() # update the weights
+                if epoch%1000==0:
+                      print('Iteration Number:', epoch)
+                      print('Negative Log-Likelihood:',(loss.item()*N)/elements)
+                      if args.LP:
+                          roc,pr=model.link_prediction() 
+                          print('AUC-ROC:',roc)
+                          print('AUC-PR:',pr)
 
     
     

@@ -39,58 +39,57 @@ class Euclidean_Kmeans():
         self.cond_control=cond_control
         
             
-        if 1==1:
             
-            if self.initialization:
-                self.lambdas_full = torch.rand(self.N,self.k_centers,device=device)
-            else:
-                self.lambdas_full = torch.rand(self.N,2,device=device)
-            self.local_cl_idx=torch.zeros(self.N,device=device)
+        if self.initialization:
+            self.lambdas_full = torch.rand(self.N,self.k_centers,device=device)
+        else:
+            self.lambdas_full = torch.rand(self.N,2,device=device)
+        self.local_cl_idx=torch.zeros(self.N,device=device)
 
-            self.inv_lambdas_full=1/self.lambdas_full
-            if self.initialization:
-                self.centroids=init_cent
-                self.cluster_idx= torch.zeros(self.N,device=device)
+        self.inv_lambdas_full=1/self.lambdas_full
+        if self.initialization:
+            self.centroids=init_cent
+            self.cluster_idx= torch.zeros(self.N,device=device)
+        else:
+            if retain_structure:
+                self.centroids=prev_centers
+                
             else:
-                if retain_structure:
-                    self.centroids=prev_centers
+                self.centroids=torch.zeros(self.k_centers,self.Dim,device=device)
+                even_idx=torch.arange(0, self.k_centers,2,device=device)
+                odd_idx=torch.arange(1, self.k_centers,2,device=device)
+       
+                self.centroids[odd_idx,:]=prev_centers+0.01
+                self.centroids[even_idx,:]=prev_centers-0.01
+            collapse_control_avg_radius = torch.zeros(full_prev_centers.shape[0],device=device)
+            
+            collapse_control_avg_radius=collapse_control_avg_radius.index_add(0, full_prev_cl, 0.5*self.aux_distance[torch.arange(self.aux_distance.shape[0],device=self.device),local_idx])
+            collapse_control_avg_radius=(collapse_control_avg_radius/assigned_points)[centroids_split]
+           
+            #self.condensed_centers=torch.where(collapse_control_avg_radius<10*(self.Dim**0.5)*self.cond_control)[0]
+            self.condensed_centers=(collapse_control_avg_radius<10*(self.Dim**0.5)*self.cond_control).float()
+           
+            if self.condensed_centers.sum()>0:
+                self.collapse_flag=True
+                # self.collapses=torch.where(self.previous_cl_idx.unsqueeze(-1)==self.condensed_centers)
+                # self.collapsed_nodes=self.collapses[0]
+                # self.collapsed_cnts=self.condensed_centers[self.collapses[1]]
+# =============================================================================
+                indicator=torch.cat([torch.arange(centroids_split.sum().long(),device=device).unsqueeze(0),torch.zeros(centroids_split.sum().long(),device=device).long().unsqueeze(0)],0)
+                
+                            
+                centers_indicator=torch.cat([torch.arange(self.previous_cl_idx.shape[0]).unsqueeze(0),self.previous_cl_idx.unsqueeze(0)],0)
+                
+                indexC, valueC = spspmm(centers_indicator,torch.ones(centers_indicator.shape[1]), indicator,self.condensed_centers,self.previous_cl_idx.shape[0],centroids_split.shape[0],1,coalesced=True)
+                if device.type=='cpu':
+                    new_valueC=torch.zeros(self.previous_cl_idx.shape[0])
+                    new_valueC[indexC[0]]=valueC
+                    self.collapsed_nodes=indexC[0]#[new_valueC.bool()]
+                    self.collapsed_cnts=self.previous_cl_idx[new_valueC.bool()]
                     
                 else:
-                    self.centroids=torch.zeros(self.k_centers,self.Dim,device=device)
-                    even_idx=torch.arange(0, self.k_centers,2,device=device)
-                    odd_idx=torch.arange(1, self.k_centers,2,device=device)
-           
-                    self.centroids[odd_idx,:]=prev_centers+0.01
-                    self.centroids[even_idx,:]=prev_centers-0.01
-                collapse_control_avg_radius = torch.zeros(full_prev_centers.shape[0],device=device)
-                
-                collapse_control_avg_radius=collapse_control_avg_radius.index_add(0, full_prev_cl, 0.5*self.aux_distance[torch.arange(self.aux_distance.shape[0],device=self.device),local_idx])
-                collapse_control_avg_radius=(collapse_control_avg_radius/assigned_points)[centroids_split]
-               
-                #self.condensed_centers=torch.where(collapse_control_avg_radius<10*(self.Dim**0.5)*self.cond_control)[0]
-                self.condensed_centers=(collapse_control_avg_radius<10*(self.Dim**0.5)*self.cond_control).float()
-               
-                if self.condensed_centers.sum()>0:
-                    self.collapse_flag=True
-                    # self.collapses=torch.where(self.previous_cl_idx.unsqueeze(-1)==self.condensed_centers)
-                    # self.collapsed_nodes=self.collapses[0]
-                    # self.collapsed_cnts=self.condensed_centers[self.collapses[1]]
-# =============================================================================
-                    indicator=torch.cat([torch.arange(centroids_split.sum().long(),device=device).unsqueeze(0),torch.zeros(centroids_split.sum().long(),device=device).long().unsqueeze(0)],0)
-                    
-                                
-                    centers_indicator=torch.cat([torch.arange(self.previous_cl_idx.shape[0]).unsqueeze(0),self.previous_cl_idx.unsqueeze(0)],0)
-                    
-                    indexC, valueC = spspmm(centers_indicator,torch.ones(centers_indicator.shape[1]), indicator,self.condensed_centers,self.previous_cl_idx.shape[0],centroids_split.shape[0],1,coalesced=True)
-                    if device.type=='cpu':
-                        new_valueC=torch.zeros(self.previous_cl_idx.shape[0])
-                        new_valueC[indexC[0]]=valueC
-                        self.collapsed_nodes=indexC[0]#[new_valueC.bool()]
-                        self.collapsed_cnts=self.previous_cl_idx[new_valueC.bool()]
-                        
-                    else:
-                        self.collapsed_nodes=indexC[0][valueC.bool()]
-                        self.collapsed_cnts=self.previous_cl_idx[valueC.bool()]
+                    self.collapsed_nodes=indexC[0][valueC.bool()]
+                    self.collapsed_cnts=self.previous_cl_idx[valueC.bool()]
 # =============================================================================
                
         
