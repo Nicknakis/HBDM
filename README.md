@@ -32,25 +32,25 @@ pip install -r requirements.txt
 Our Pytorch implementation heavily relies on the [pytorch_sparse](https://github.com/rusty1s/pytorch_sparse) package. Installation guidelines can be found at the corresponding [Github repository](https://github.com/rusty1s/pytorch_sparse).
 
 ### Learning hierarchical and multi-scale graph representations with HBDM
-RUN: &emsp; python main.py
+**RUN:** &emsp; python main.py
 
 optional arguments:
 
---epochs  &emsp;  number of epochs for training (default: 15K)
+**--epochs**  &emsp;  number of epochs for training (default: 15K)
 
---RH    &emsp;    number of epochs to rebuild the hierarchy from scratch (default: 25)
+**--RH**    &emsp;    number of epochs to rebuild the hierarchy from scratch (default: 25)
 
---cuda  &emsp;    CUDA training (default: True)
+**--cuda**  &emsp;    CUDA training (default: True)
 
---LP   &emsp;     performs link prediction (default: True)
+**--LP**   &emsp;     performs link prediction (default: True)
 
---D   &emsp;      dimensionality of the embeddings (default: 2)
+**--D**   &emsp;      dimensionality of the embeddings (default: 2)
 
---lr   &emsp;     learning rate for the ADAM optimizer (default: 0.1)
+**--lr**   &emsp;     learning rate for the ADAM optimizer (default: 0.1)
 
---RE   &emsp;     activates random effects (default: True)
+**--RE**   &emsp;     activates random effects (default: True)
 
---dataset &emsp;  dataset to apply HBDM' (default: grqc)
+**--dataset** &emsp;  dataset to apply HBDM' (default: grqc)
 
 ### CUDA Implementation
 
