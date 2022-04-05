@@ -11,18 +11,7 @@ from torch_sparse import spspmm
 
 class Euclidean_Kmeans():
     def __init__(self,cond_control,k_centers,dimensions,init_cent=None,split_mask=None,previous_cl_idx=None,full_prev_cl=None,prev_centers=None,full_prev_centers=None,centroids_split=None,assigned_points=None,aux_distance=None,local_idx=None,initialization=1,retain_structure=False,device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu"), n_iter=300):
-        """
-        Kmeans-Euclidean Distance minimization: Pytorch CUDA version
-        k_centers: number of the starting centroids
-        Data:Data array (if already in CUDA no need for futher transform)
-        N: Dataset size
-        Dim: Dataset dimensionality
-        n_iter: max epoch iterations, if the centeroids not shifting any more, the calculation will cease before this max number
-        full_cuda_load: send the whole matrix into CUDA for faster implementations (memory requirements)
         
-        AVOID the use of dataloader module of Pytorch---every batch will be loaded from the CPU to GPU giving high order loading overhead
-        """
-       
         self.k_centers=k_centers
         self.N=dimensions[0]
         self.Dim=dimensions[-1]

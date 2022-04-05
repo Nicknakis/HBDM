@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Import all the packages
 import torch
 import torch.nn as nn

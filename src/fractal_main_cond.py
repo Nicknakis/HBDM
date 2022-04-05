@@ -8,16 +8,7 @@ from torch_sparse import spspmm
 from copy import deepcopy
 class Tree_kmeans_recursion():
     def __init__(self,minimum_points,init_layer_split):
-        """
-        Kmeans-Euclidean Distance minimization: Pytorch CUDA version
-        k_centers: number of the starting centroids
-        Data:Data array (if already in CUDA no need for futher transform)
-        N: Dataset size
-        Dim: Dataset dimensionality
-        n_iter: max epoch iterations, if the centeroids not shifting any more, the calculation will cease before this max number
-        full_cuda_load: send the whole matrix into CUDA for faster implementations (memory requirements)
-        
-        """
+       
         self.minimum_points=minimum_points
         self.init_layer_split=init_layer_split
         self.thetas=[]
