@@ -29,7 +29,7 @@ We propose a novel graph representation learning method named the Hierarchical B
 ### Installation
 pip install -r requirements.txt
 
-Our Pytorch implementation heavily relies on the [pytorch_sparse](https://github.com/rusty1s/pytorch_sparse) package. Installation guidelines can be found at the corresponding [Github repository](https://github.com/rusty1s/pytorch_sparse).
+Our Pytorch implementation relies heavily on the [pytorch_sparse](https://github.com/rusty1s/pytorch_sparse) package. Installation guidelines can be found at the corresponding [Github repository](https://github.com/rusty1s/pytorch_sparse).
 
 ### Learning hierarchical and multi-scale graph representations with HBDM
 **RUN:** &emsp; python main.py
