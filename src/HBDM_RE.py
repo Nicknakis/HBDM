@@ -17,7 +17,7 @@ undirected=1
 
 
 class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
-    def __init__(self,data,sparse_i,sparse_j, input_size,latent_dim,graph_type,non_sparse_i=None,non_sparse_j=None,sparse_i_rem=None,sparse_j_rem=None,CVflag=False,initialization=None,scaling=None,missing_data=False,device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu")):
+    def __init__(self,data,sparse_i,sparse_j, input_size,latent_dim,graph_type,non_sparse_i=None,non_sparse_j=None,sparse_i_rem=None,sparse_j_rem=None,CVflag=False,initialization=None,scaling=None,missing_data=False,device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),LP=True):
         super(LSM, self).__init__()
         Tree_kmeans_recursion.__init__(self,minimum_points=3*int(data.shape[0]/(data.shape[0]/np.log(data.shape[0]))),init_layer_split=3*torch.round(torch.log(torch.tensor(data.shape[0]).float())))
         Spectral_clustering_init.__init__(self,device=device)
@@ -46,15 +46,15 @@ class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
 
         self.device=device
         
-      
-        self.non_sparse_i_idx_removed=non_sparse_i
-     
-        self.non_sparse_j_idx_removed=non_sparse_j
-           
-        self.sparse_i_idx_removed=sparse_i_rem
-        self.sparse_j_idx_removed=sparse_j_rem
-        self.removed_i=torch.cat((self.non_sparse_i_idx_removed,self.sparse_i_idx_removed))
-        self.removed_j=torch.cat((self.non_sparse_j_idx_removed,self.sparse_j_idx_removed))
+        if LP:
+            self.non_sparse_i_idx_removed=non_sparse_i
+         
+            self.non_sparse_j_idx_removed=non_sparse_j
+               
+            self.sparse_i_idx_removed=sparse_i_rem
+            self.sparse_j_idx_removed=sparse_j_rem
+            self.removed_i=torch.cat((self.non_sparse_i_idx_removed,self.sparse_i_idx_removed))
+            self.removed_j=torch.cat((self.non_sparse_j_idx_removed,self.sparse_j_idx_removed))
 
         
         self.spectral_data=self.spectral_clustering()#.flip(1)
