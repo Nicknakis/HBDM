@@ -48,7 +48,7 @@ class LSM(nn.Module,Tree_kmeans_recursion,Spectral_clustering_init):
         
         self.device=device
        
-         if LP:
+        if LP:
             self.non_sparse_i_idx_removed=non_sparse_i
          
             self.non_sparse_j_idx_removed=non_sparse_j
