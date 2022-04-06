@@ -2,8 +2,6 @@
 import torch
 import torch.nn as nn
 import numpy as np
-import torch.optim as optim
-import matplotlib.pyplot as plt
 import torch_sparse
 
 CUDA = torch.cuda.is_available()
