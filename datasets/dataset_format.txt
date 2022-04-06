@@ -1,0 +1,22 @@
+Datasets format:
+
+Netwok INPUT:
+
+- sparse_i: input data, link rows i positions with i<j
+
+- sparse_j: input data, link column positions with i<j
+
+Link Prediction and Missing Data INPUT:
+(Relevnant ONLY for link prediction and missing links. In this case, sparse_i and sparse_j should denote the link positions
+only of the remaininig links of the network.)
+
+- sparse_i_rem: file denoting rows i of missing links, with i<j 
+ 
+- sparse_j_rem: file denoting columns j of missing links, with i<j
+ 
+- non_sparse_i: file denoting negative sample rows i, with i<j
+ 
+- non_sparse_j: file denoting negative sample columns, with i<j
+
+
+
