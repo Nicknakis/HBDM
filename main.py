@@ -64,24 +64,26 @@ if __name__ == "__main__":
     datasets=[args.dataset]
     for dataset in datasets:
         for latent_dim in latent_dims:
-            # file denoting rows i of missing links, with i<j 
-            sparse_i_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i_rem.txt')).long().to(device)
-            # file denoting columns j of missing links, with i<j
-            sparse_j_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j_rem.txt')).long().to(device)
+            # input data, link rows i positions with i<j
+            sparse_i=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i.txt')).long().to(device)
+            # input data, link column positions with i<j
+            sparse_j=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j.txt')).long().to(device)
+            
             if args.LP:
+                # file denoting rows i of missing links, with i<j 
+                sparse_i_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i_rem.txt')).long().to(device)
+                # file denoting columns j of missing links, with i<j
+                sparse_j_rem=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j_rem.txt')).long().to(device)
                 # file denoting negative sample rows i, with i<j
                 non_sparse_i=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/non_sparse_i.txt')).long().to(device)
                 # file denoting negative sample columns, with i<j
                 non_sparse_j=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/non_sparse_j.txt')).long().to(device)
-                # input data, link rows i positions with i<j
-                sparse_i=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_i.txt')).long().to(device)
-                # input data, link column positions with i<j
-                sparse_j=torch.from_numpy(np.loadtxt("./datasets/"+dataset+'/sparse_j.txt')).long().to(device)
+               
             else:
                 non_sparse_i=None
                 non_sparse_j=None
-                sparse_i=None
-                sparse_j=None
+                sparse_i_rem=None
+                sparse_j_rem=None
                 
             N=int(sparse_j.max()+1)
             #Missing data here denoted if Marginalization is applied or not
