@@ -1,10 +1,10 @@
 Datasets format:
 
-Netwok INPUT:
+Netwok INPUT (upper triangular part of the adjacency matrix for the unipartite case):
 
 - sparse_i: input data, link rows i positions with i<j
 
-- sparse_j: input data, link column positions with i<j
+- sparse_j: input data, link columns positions with i<j
 
 Link Prediction and Missing Data INPUT:
 (Relevnant ONLY for link prediction and missing links. In this case, sparse_i and sparse_j should denote the link positions
