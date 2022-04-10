@@ -50,7 +50,7 @@ optional arguments:
 
 **--RE**   &emsp;     activates random effects (default: True)
 
-**--dataset** &emsp;  dataset to apply HBDM' (default: grqc)
+**--dataset** &emsp;  dataset to apply HBDM (default: grqc)
 
 ### CUDA Implementation
 
