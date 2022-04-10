@@ -92,7 +92,7 @@ if __name__ == "__main__":
             optimizer = optim.Adam(model.parameters(), args.lr)  
             elements=(N*(N-1))*0.5
             for epoch in tqdm(range(args.epochs),desc="HBDM is Running…",ascii=False, ncols=75):
-                if (epoch%25==0):
+                if (epoch%args.RH==0):
                     model.build_hierarchy=True
                 
                                   
