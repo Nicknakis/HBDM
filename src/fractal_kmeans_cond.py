@@ -1,7 +1,3 @@
-
-
-
-
 import torch
 import torch.nn as nn
 from torch_sparse import spspmm
