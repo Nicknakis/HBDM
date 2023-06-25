@@ -26,7 +26,22 @@ We propose a novel graph representation learning method named the Hierarchical B
 |:---:|:---:|:---:|:---:|
 | L=1 | L=3| L=6 | 2-D Embedding Space |
 
-### Installation
+
+## Installation
+
+### Create a Python 3.8.3 environment with conda
+
+```
+conda create -n ${env_name} python=3.8.3  
+```
+
+### Activate the environment
+
+```
+conda activate ${env_name} 
+```
+
+### Please install the required packages
 ```pip install -r requirements.txt```
 
 ### Additional packages
