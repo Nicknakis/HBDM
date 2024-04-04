@@ -86,6 +86,6 @@ The code has been primarily constructed and optimized for running in a GPU-enabl
 
 
 ### References
-N. Nakis, A. Celikkanat, S. Lehmann and M. Mørup, [A Hierarchical Block Distance Model for Ultra Low-Dimensional Graph Representations](https://arxiv.org/abs/2204.05885), Preprint.
+N. Nakis, A. Celikkanat, S. Lehmann and M. Mørup, [A Hierarchical Block Distance Model for Ultra Low-Dimensional Graph Representations](https://arxiv.org/abs/2204.05885), IEEE Transactions on Knowledge and Data Engineering (TKDE).
 
 [Supplementary Materials](https://drive.google.com/file/d/12lb39Bs6SeZj2cXknB34vm9XKS70YTxM/view?usp=sharing)
